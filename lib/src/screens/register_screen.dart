@@ -21,7 +21,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // Step 1: Kirim OTP via WhatsApp
   Future<void> _sendWhatsApp() async {
-    if (_nameController.text.isEmpty || _phoneController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_nameController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
       _showSnackBar('Mohon isi semua data');
       return;
     }
@@ -30,7 +32,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       // 1. Cek dulu apakah nomor sudah terdaftar
-      bool isRegistered = await _authService.isPhoneRegistered(_phoneController.text);
+      bool isRegistered = await _authService.isPhoneRegistered(
+        _phoneController.text,
+      );
       if (isRegistered) {
         _showSnackBar('Nomor ini sudah terdaftar. Silakan login.');
         setState(() => _isLoading = false);
@@ -78,10 +82,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _showSnackBar(String message, {bool isError = true}) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      backgroundColor: isError ? Colors.red : Colors.green,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
+    );
   }
 
   @override
@@ -97,26 +103,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if (!_otpSent) ...[
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Nama Lengkap', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Nama Lengkap',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Nomor WhatsApp (08xxx)', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Nomor WhatsApp (08xxx)',
+                    border: OutlineInputBorder(),
+                  ),
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Buat Password', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Buat Password',
+                    border: OutlineInputBorder(),
+                  ),
                   obscureText: true,
                 ),
               ] else ...[
-                const Text('Masukkan 6 digit kode yang dikirim ke WhatsApp Anda', textAlign: TextAlign.center),
+                const Text(
+                  'Masukkan 6 digit kode yang dikirim ke WhatsApp Anda',
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _otpController,
-                  decoration: const InputDecoration(labelText: 'Kode OTP', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(
+                    labelText: 'Kode OTP',
+                    border: OutlineInputBorder(),
+                  ),
                   keyboardType: TextInputType.number,
                 ),
               ],
@@ -125,8 +146,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: _otpSent ? _verifyAndRegister : _sendWhatsApp,
-                      style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-                      child: Text(_otpSent ? 'Verifikasi & Daftar' : 'Kirim Kode via WhatsApp'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      child: Text(
+                        _otpSent
+                            ? 'Verifikasi & Daftar'
+                            : 'Kirim Kode via WhatsApp',
+                      ),
                     ),
               if (_otpSent)
                 TextButton(
