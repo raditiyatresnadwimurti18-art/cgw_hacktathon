@@ -5,6 +5,7 @@ import 'src/screens/login_screen.dart';
 import 'src/screens/register_screen.dart';
 import 'src/screens/home_screen.dart';
 import 'src/services/auth_service.dart';
+import 'src/config/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auth App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
       // Jika sudah login, langsung ke Home
       initialRoute: isLoggedIn ? '/home' : '/',
       routes: {
